@@ -50,3 +50,14 @@ func UpdateAnimal(requestBody []byte) (entity.Animal, error) {
 	}
 	return *animalDTO, nil
 }
+
+func DeleteAnimal(id int) error {
+
+	result := dbConfig.Database.Model(&entity.Animal{}).Where("id = ?", id).Delete(&entity.Animal{}) // update entity
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}

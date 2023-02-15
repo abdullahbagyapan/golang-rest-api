@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	fiber "github.com/gofiber/fiber/v2"
 	"net/http"
 	"petshop/service"
@@ -36,4 +37,20 @@ func UpdateAnimal(c *fiber.Ctx) error {
 
 	return c.Status(http.StatusOK).JSON(animal)
 
+}
+
+func DeleteAnimal(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fmt.Sprintf("There is no id with = %d", id))
+	}
+
+	err = service.DeleteAnimal(id)
+
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON("Animal did not delete")
+	}
+
+	return c.SendStatus(http.StatusOK)
 }

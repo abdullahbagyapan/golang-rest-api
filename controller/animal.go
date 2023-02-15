@@ -6,7 +6,7 @@ import (
 	"petshop/service"
 )
 
-func GetDogs(c *fiber.Ctx) error {
+func GetAnimals(c *fiber.Ctx) error {
 	body := service.GetDogs()
 
 	return c.Status(http.StatusOK).JSON(body)

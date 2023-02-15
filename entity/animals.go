@@ -2,10 +2,10 @@ package entity
 
 import "gorm.io/gorm"
 
-type Dog struct {
+type Animal struct {
 	gorm.Model
 	Name      string `json:"name"`
-	Breed     string `json:"breed"`
+	Type      string `json:"type"`
 	Age       int    `json:"age"`
 	IsGoodBoy bool   `json:"isGoodBoy" gorm:"default:true"`
 }

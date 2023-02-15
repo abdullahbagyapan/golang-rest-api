@@ -27,3 +27,26 @@ func AddAnimal(requestBody []byte) (entity.Animal, error) {
 
 	return *animal, nil
 }
+
+func UpdateAnimal(requestBody []byte) (entity.Animal, error) {
+	animalDTO := new(entity.Animal)
+	err := json.Unmarshal([]byte(requestBody), &animalDTO)
+
+	if err != nil {
+		return *animalDTO, err
+	}
+
+	var animal entity.Animal
+	result := dbConfig.Database.First(&animal, "id = ?", animalDTO.ID) // id query
+
+	if result.Error != nil {
+		return *animalDTO, result.Error
+	}
+
+	result = dbConfig.Database.Model(&entity.Animal{}).Where("id = ?", animalDTO.ID).Updates(animalDTO) // update entity
+
+	if result.Error != nil {
+		return *animalDTO, result.Error
+	}
+	return *animalDTO, nil
+}

@@ -21,5 +21,19 @@ func AddAnimal(c *fiber.Ctx) error {
 		return c.Status(http.StatusBadRequest).JSON("Animal did not add")
 	}
 
-	return c.Status(201).JSON(animal)
+	return c.Status(http.StatusCreated).JSON(animal)
+}
+
+func UpdateAnimal(c *fiber.Ctx) error {
+
+	requestBody := c.Request().Body()
+
+	animal, err := service.UpdateAnimal(requestBody)
+
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON("Animal did not update")
+	}
+
+	return c.Status(http.StatusOK).JSON(animal)
+
 }

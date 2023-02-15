@@ -13,8 +13,9 @@ func main() {
 
 	dbConfig.Connect()
 
-	app.Get("/dogs", controller.GetDogs)
-	app.Post("/dogs", controller.AddDog)
+	app.Get("/animals", controller.GetAnimals)
+	app.Post("/animals", controller.AddAnimal)
+	app.Put("/animals", controller.UpdateAnimal)
 
 	log.Fatal(app.Listen(":8080"))
 

@@ -7,19 +7,19 @@ import (
 )
 
 func GetAnimals(c *fiber.Ctx) error {
-	body := service.GetDogs()
+	body := service.GetAnimals()
 
 	return c.Status(http.StatusOK).JSON(body)
 }
 
-func AddDog(c *fiber.Ctx) error {
+func AddAnimal(c *fiber.Ctx) error {
 	requestBody := c.Request().Body()
 
-	dog, err := service.AddDog(requestBody)
+	animal, err := service.AddAnimal(requestBody)
 
 	if err != nil {
-		return c.Status(http.StatusBadRequest).JSON("Dog did not add")
+		return c.Status(http.StatusBadRequest).JSON("Animal did not add")
 	}
 
-	return c.Status(201).JSON(dog)
+	return c.Status(201).JSON(animal)
 }

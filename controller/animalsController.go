@@ -8,7 +8,13 @@ import (
 )
 
 func GetAnimals(c *fiber.Ctx) error {
-	body := service.GetAnimals()
+	param, _ := c.ParamsInt("id", -1) // default param value ->> -1
+
+	body, err := service.GetAnimals(param)
+
+	if err != nil {
+		return c.SendStatus(http.StatusBadRequest)
+	}
 
 	return c.Status(http.StatusOK).JSON(body)
 }

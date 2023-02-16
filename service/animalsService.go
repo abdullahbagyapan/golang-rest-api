@@ -6,12 +6,24 @@ import (
 	"petshop/entity"
 )
 
-func GetAnimals() []entity.Animal {
+func GetAnimals(id int) (value interface{}, er error) {
 
+	if id != -1 { // default param value = -1
+		var animal entity.Animal
+		result := dbConfig.Database.First(&animal, "id = ?", id)
+
+		if result.Error != nil {
+			return nil, result.Error
+		}
+
+		return animal, nil
+
+	}
 	var animals []entity.Animal
 	dbConfig.Database.Find(&animals)
 
-	return animals
+	return animals, nil
+
 }
 
 func AddAnimal(requestBody []byte) (entity.Animal, error) {

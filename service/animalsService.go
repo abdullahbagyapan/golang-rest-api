@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"errors"
 	"petshop/dbConfig"
 	"petshop/entity"
 )
@@ -40,36 +41,42 @@ func AddAnimal(requestBody []byte) (entity.Animal, error) {
 	return *animal, nil
 }
 
-func UpdateAnimal(requestBody []byte) (entity.Animal, error) {
+func UpdateAnimal(id int, requestBody []byte) (interface{}, error) {
+
 	animalDTO := new(entity.Animal)
-	err := json.Unmarshal([]byte(requestBody), &animalDTO)
+	err := json.Unmarshal([]byte(requestBody), &animalDTO) // assign
 
 	if err != nil {
-		return *animalDTO, err
+		return nil, err
 	}
 
 	var animal entity.Animal
-	result := dbConfig.Database.First(&animal, "id = ?", animalDTO.ID) // id query
+	result := dbConfig.Database.First(&animal, "id = ?", id) // id query
 
 	if result.Error != nil {
-		return *animalDTO, result.Error
+		return nil, result.Error
 	}
 
-	result = dbConfig.Database.Model(&entity.Animal{}).Where("id = ?", animalDTO.ID).Updates(animalDTO) // update entity
+	result = dbConfig.Database.Model(&entity.Animal{}).Where("id = ?", id).Updates(animalDTO) // update entity
 
 	if result.Error != nil {
-		return *animalDTO, result.Error
+		return nil, result.Error
 	}
+
 	return *animalDTO, nil
 }
 
 func DeleteAnimal(id int) error {
 
-	result := dbConfig.Database.Model(&entity.Animal{}).Where("id = ?", id).Delete(&entity.Animal{}) // update entity
+	if id != -1 {
 
-	if result.Error != nil {
-		return result.Error
+		result := dbConfig.Database.Model(&entity.Animal{}).Where("id = ?", id).Delete(&entity.Animal{}) // delete entity
+
+		if result.Error != nil {
+			return result.Error
+		}
+		return nil
 	}
+	return errors.New("invalid param")
 
-	return nil
 }

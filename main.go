@@ -15,8 +15,8 @@ func main() {
 
 	app.Get("/animals/:id<int>?", controller.GetAnimals) // paramName , paramType , optionalParam
 	app.Post("/animals", controller.AddAnimal)
-	app.Put("/animals", controller.UpdateAnimal)
-	app.Delete("/animals/:id", controller.DeleteAnimal)
+	app.Put("/animals/:id<int>", controller.UpdateAnimal)
+	app.Delete("/animals/:id<int>", controller.DeleteAnimal)
 
 	log.Fatal(app.Listen(":8080"))
 
